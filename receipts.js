@@ -4,7 +4,7 @@ export const receipts = {
 
 let id_tracker = 1;
 
-
+// Helper function to process receipt and add it to my data set
 export const addReceipt = async (retailer, purchaseDate, purchaseTime, total, items) => {
     const id = id_tracker;
     id_tracker++;
@@ -35,7 +35,8 @@ const itemCountPoints = num => {
 const itemDescriptionsPoints = items => {
     let count = 0;
     for (let item of items) {
-        const length = item.shortDescription.length;
+        const description = item.shortDescription.trim()
+        const length = description.length;
         if (length % 3 === 0) {
             count += Math.ceil(parseFloat(item.price) * 0.2);
         }
@@ -58,6 +59,8 @@ const purchaseTimePoints = time => {
     else return 0;
 }
 
+
+// helper function to calculate points by id
 export const getPoints = async (id) => {
     const receipt = receipts[id];
     let points = 0;
