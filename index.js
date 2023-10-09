@@ -1,5 +1,5 @@
 import express from "express";
-import { addReceipt, getPoints } from "./receipts.js";
+import { addReceipt, getPoints, isValidReceipt } from "./receipts.js";
 
 const app = express();
 
@@ -7,7 +7,8 @@ app.use(express.json());
 
 app.post("/receipts/process", async (req, res) => {
     const { retailer, purchaseDate, purchaseTime, total, items } = req.body;
-    if (!retailer || !purchaseDate || !purchaseTime || !total || !items) {
+    const valid = await isValidReceipt(retailer, purchaseDate, purchaseTime, total, items);
+    if (valid === false) {
         res.status(400)
         return res.send({"Error": "The receipt is invalid"})
     }

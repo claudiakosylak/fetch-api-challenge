@@ -81,3 +81,23 @@ export const getPoints = async (id) => {
     points += purchaseTimePoints(receipt.purchaseTime);
     return points;
 }
+
+
+// helper function to validate inputs of receipt
+export const isValidReceipt = async (retailer, purchaseDate, purchaseTime, total, items) => {
+    if (!retailer || !purchaseDate || !purchaseTime || !total || !items) {
+        return false;
+    }
+    if (typeof retailer !== "string") return false;
+    if (typeof purchaseDate !== "string" || isNaN(Date.parse(purchaseDate))) return false;
+    if (typeof purchaseTime !== "string" || !/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(purchaseTime)) return false;
+    if (typeof total !== "string") return false;
+    if (!Array.isArray(items) || items.length < 1) return false;
+
+    for (let item of items) {
+        if (!item.shortDescription || !item.price) return false;
+        if (typeof item.shortDescription !== "string") return false;
+        if (typeof item.price !== "string") return false;
+    }
+    return true;
+}
