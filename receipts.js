@@ -6,7 +6,7 @@ let id_tracker = 1;
 
 // Helper function to process receipt and add it to my data set
 export const addReceipt = async (retailer, purchaseDate, purchaseTime, total, items) => {
-    const id = id_tracker;
+    const id = id_tracker.toString();
     id_tracker++;
     receipts[id] = {
         retailer,
@@ -62,6 +62,7 @@ const purchaseTimePoints = time => {
 
 // helper function to calculate points by id
 export const getPoints = async (id) => {
+    if (!id || !receipts[id]) return null;
     const receipt = receipts[id];
     let points = 0;
     // Points for alphanumeric chars in retailer name
